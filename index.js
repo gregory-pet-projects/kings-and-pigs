@@ -6,21 +6,17 @@ canvas.height = 64 * 9; //576  ratio
 
 let y = 100;
 c.fillRect(100, y, 100, 100);
-//let playerHeight = 100;
-//let bottom = y + playerHeight;
+
+
+const backgroundLevel1 = new Sprite({
+  position: {
+    x: 0,
+    y: 0,
+  },
+  imageSrc: "./img/backgroundLevel1.png",
+});
 const player = new Player();
 
-const keys = {
-  w: {
-    pressed: false,
-  },
-  a: {
-    pressed: false,
-  },
-  d: {
-    pressed: false,
-  },
-};
 function moveBySidesHandler() {
   player.velocity.x = 0;
   if (keys.d.pressed) {
@@ -32,9 +28,7 @@ function moveBySidesHandler() {
 function animate() {
   window.requestAnimationFrame(animate);
 
-  //playground
-  c.fillStyle = "white";
-  c.fillRect(0, 0, canvas.width, canvas.height);
+  backgroundLevel1.draw();
 
   moveBySidesHandler();
 
