@@ -4,32 +4,6 @@ const c = canvas.getContext("2d");
 canvas.width = 64 * 16; //1024
 canvas.height = 64 * 9; //576  ratio
 
-class Player {
-  constructor() {
-    this.position = {
-      x: 100,
-      y: 100,
-    };
-    this.width = 100;
-    this.height = 100;
-    this.sides ={
-        bottom:this.position.y+this.height
-    }
-  }
-
-  draw() {
-    c.fillStyle = "red";
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
-  }
-
-  update(){
-    if (this.sides.bottom < canvas.height) {
-        this.position.y++;
-        this.sides.bottom = this.position.y + this.height;
-      }
-  }
-}
-
 let y = 100;
 c.fillRect(100, y, 100, 100);
 //let playerHeight = 100;
@@ -45,7 +19,6 @@ function animate() {
 
   player.draw();
   player.update();
- 
 }
 
 animate();
