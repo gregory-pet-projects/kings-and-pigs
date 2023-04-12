@@ -12,11 +12,21 @@ class Player {
     };
     this.width = 100;
     this.height = 100;
+    this.sides ={
+        bottom:this.position.y+this.height
+    }
   }
 
   draw() {
     c.fillStyle = "red";
     c.fillRect(this.position.x, this.position.y, this.width, this.height);
+  }
+
+  update(){
+    if (this.sides.bottom < canvas.height) {
+        this.position.y++;
+        this.sides.bottom = this.position.y + this.height;
+      }
   }
 }
 
@@ -34,10 +44,8 @@ function animate() {
   c.fillRect(0, 0, canvas.width, canvas.height);
 
   player.draw();
-  //   if (bottom < canvas.height) {
-  //     y++;
-  //     bottom = y + 100;
-  //   }
+  player.update();
+ 
 }
 
 animate();
