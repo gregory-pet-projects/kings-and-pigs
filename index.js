@@ -13,6 +13,11 @@ class Player {
     this.width = 100;
     this.height = 100;
   }
+
+  draw() {
+    c.fillStyle = "red";
+    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+  }
 }
 
 let y = 100;
@@ -28,6 +33,7 @@ function animate() {
   c.fillStyle = "white";
   c.fillRect(0, 0, canvas.width, canvas.height);
 
+  player.draw();
   //   if (bottom < canvas.height) {
   //     y++;
   //     bottom = y + 100;
