@@ -1,3 +1,15 @@
+const keys = {
+  w: {
+    pressed: false,
+  },
+  a: {
+    pressed: false,
+  },
+  d: {
+    pressed: false,
+  },
+};
+
 function jump() {
   if (player.velocity.y === 0) {
     player.velocity.y = -20;
