@@ -4,9 +4,13 @@ const c = canvas.getContext("2d");
 canvas.width = 64 * 16; //1024
 canvas.height = 64 * 9; //576  ratio
 
-let y = 100;
-c.fillRect(100, y, 100, 100);
 
+
+
+
+const parsedCollisions = collisionsLevel1.parse2D();
+
+const collisionBlocks = parsedCollisions.createObjectsFrom2D();
 
 const backgroundLevel1 = new Sprite({
   position: {
@@ -25,10 +29,18 @@ function moveBySidesHandler() {
     player.velocity.x = -5;
   }
 }
+
+function drawCollisionBlocks() {
+  collisionBlocks.forEach((collisionBlocks) => {
+    collisionBlocks.draw();
+  });
+}
 function animate() {
   window.requestAnimationFrame(animate);
 
   backgroundLevel1.draw();
+
+  drawCollisionBlocks();
 
   moveBySidesHandler();
 
