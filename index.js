@@ -4,10 +4,6 @@ const c = canvas.getContext("2d");
 canvas.width = 64 * 16; //1024
 canvas.height = 64 * 9; //576  ratio
 
-
-
-
-
 const parsedCollisions = collisionsLevel1.parse2D();
 
 const collisionBlocks = parsedCollisions.createObjectsFrom2D();
@@ -19,7 +15,12 @@ const backgroundLevel1 = new Sprite({
   },
   imageSrc: "./img/backgroundLevel1.png",
 });
-const player = new Player({ collisionBlocks });
+
+const player = new Player({
+  collisionBlocks,
+  imageSrc: "./img/king/idle.png",
+  frameRate: 11,
+});
 
 function moveBySidesHandler() {
   player.velocity.x = 0;
