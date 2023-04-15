@@ -10,6 +10,7 @@ class Player extends Sprite {
       x: 200,
       y: 200,
     };
+
     this.velocity = {
       x: 0,
       y: 0,
@@ -18,18 +19,29 @@ class Player extends Sprite {
     this.sides = {
       bottom: this.position.y + this.height,
     };
-    this.gravity = GRAVITY;
+    this.gravity = 1;
+
     this.collisionBlocks = collisionBlocks;
   }
 
   update() {
-    //this is blue box
-    // c.fillStyle = "rgba(0 ,0, 255,0.5)";
-    // c.fillRect(this.position.x, this.position.y, this.width, this.height);
     this.position.x += this.velocity.x;
+    this.updateHitbox();
     this.checkForCollisions();
     this.applyGravity();
+    this.updateHitbox();
     this.checkForCollisions(VERTICAL_AXIS);
+  }
+
+  updateHitbox() {
+    this.hitbox = {
+      position: {
+        x: this.position.x + 58,
+        y: this.position.y + 34,
+      },
+      width: 50,
+      height: 53,
+    };
   }
 
   applyGravity() {
@@ -49,44 +61,42 @@ class Player extends Sprite {
 
       // Check if collision exists with current block
       if (
-        this.position.x <= collisionBlock.position.x + collisionBlock.width && // Check if object is on right side of block
-        this.position.x + this.width >= collisionBlock.position.x && // Check if object is on left side of block
-        this.position.y + this.height >= collisionBlock.position.y && // Check if object is below block
-        this.position.y <= collisionBlock.position.y + collisionBlock.height // Check if object is above block
+        this.hitbox.position.x <=
+          collisionBlock.position.x + collisionBlock.width && // Check if object is on right side of block
+        this.hitbox.position.x + this.hitbox.width >=
+          collisionBlock.position.x && // Check if object is on left side of block
+        this.hitbox.position.y + this.hitbox.height >=
+          collisionBlock.position.y && // Check if object is below block
+        this.hitbox.position.y <=
+          collisionBlock.position.y + collisionBlock.height // Check if object is above block
       ) {
         // If axis is vertical
         if (isVertical) {
-          // Check if object is moving up
+          // Check if object is moving up or down
           if (this.velocity.y < 0) {
-            // Stop upward movement
             this.velocity.y = 0;
-            // Move object to bottom of block
-            this.position.y =
-              collisionBlock.position.y + collisionBlock.height + buffer;
-            break;
-          }
-          // Check if object is moving down
-          if (this.velocity.y > 0) {
-            // Stop downward movement
+            const { position, height } = collisionBlock;
+            const offset = this.hitbox.position.y - this.position.y;
+            this.position.y = position.y + height - offset + buffer;
+          } else if (this.velocity.y > 0) {
             this.velocity.y = 0;
-            // Move object to top of block
-            this.position.y = collisionBlock.position.y - this.height - buffer;
-            break;
+            const { position } = collisionBlock;
+            const offset =
+              this.hitbox.position.y - this.position.y + this.hitbox.height;
+            this.position.y = position.y - offset - buffer;
           }
         } else {
           // If axis is horizontal
-          // Check if object is moving left
+          // Check if object is moving left or right
           if (this.velocity.x < 0) {
-            // Move object to right of block
-            this.position.x =
-              collisionBlock.position.x + collisionBlock.width + buffer;
-            break;
-          }
-          // Check if object is moving right
-          if (this.velocity.x > 0) {
-            // Move object to left of block
-            this.position.x = collisionBlock.position.x - this.width - buffer;
-            break;
+            const { position, width } = collisionBlock;
+            const offset = this.hitbox.position.x - this.position.x;
+            this.position.x = position.x + width - offset + buffer;
+          } else if (this.velocity.x > 0) {
+            const { position } = collisionBlock;
+            const offset =
+              this.hitbox.position.x - this.position.x + this.hitbox.width;
+            this.position.x = position.x - offset - buffer;
           }
         }
       }
