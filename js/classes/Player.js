@@ -1,3 +1,8 @@
+const GRAVITY = 1;
+const EPSILON = 0.01;
+const BUFFER = 0.1;
+const VERTICAL_AXIS = "vertical";
+
 class Player {
   constructor({ collisionBlocks = [] }) {
     this.position = {
@@ -13,7 +18,7 @@ class Player {
     this.sides = {
       bottom: this.position.y + this.height,
     };
-    this.gravity = 1;
+    this.gravity = GRAVITY;
     this.collisionBlocks = collisionBlocks;
   }
 
@@ -24,34 +29,9 @@ class Player {
 
   update() {
     this.position.x += this.velocity.x;
-    this.checkForHorizontalCollisions();
+    this.checkForCollisions();
     this.applyGravity();
-    this.checkForVeritcalCollisions();
-  }
-
-  checkForHorizontalCollisions() {
-    for (let i = 0; i < this.collisionBlocks.length; i++) {
-      const collisionBlock = this.collisionBlocks[i];
-      //if collision exist
-      if (
-        this.position.x <= collisionBlock.position.x + collisionBlock.width && //right side
-        this.position.x + this.width >= collisionBlock.position.x && //left side
-        this.position.y + this.height >= collisionBlock.position.y && //bottom
-        this.position.y <= collisionBlock.position.y + collisionBlock.height //top
-      ) {
-        //collision on x axis going to the left
-        if (this.velocity.x < 0) {
-          this.position.x =
-            collisionBlock.position.x + collisionBlock.width + 0.01;
-          break;
-        }
-
-        if (this.velocity.x > 0) {
-          this.position.x = collisionBlock.position.x - this.width - 0.1;
-          break;
-        }
-      }
-    }
+    this.checkForCollisions(VERTICAL_AXIS);
   }
 
   applyGravity() {
@@ -59,7 +39,10 @@ class Player {
     this.position.y += this.velocity.y;
   }
 
-  checkForVeritcalCollisions() {
+  checkForCollisions(axis) {
+    const isVertical = axis === VERTICAL_AXIS;
+    const buffer = isVertical ? BUFFER : EPSILON;
+
     for (let i = 0; i < this.collisionBlocks.length; i++) {
       const collisionBlock = this.collisionBlocks[i];
       //if collision exist
@@ -69,20 +52,28 @@ class Player {
         this.position.y + this.height >= collisionBlock.position.y && //bottom
         this.position.y <= collisionBlock.position.y + collisionBlock.height //top
       ) {
-        //collision on x axis going to the left
-        if (this.velocity.y < 0) {
-          this.velocity.y = 0;
-
-          this.position.y =
-            collisionBlock.position.y + collisionBlock.height + 0.01;
-          break;
-        }
-
-        if (this.velocity.y > 0) {
-          this.velocity.y = 0;
-
-          this.position.y = collisionBlock.position.y - this.height - 0.1;
-          break;
+        if (isVertical) {
+          if (this.velocity.y < 0) {
+            this.velocity.y = 0;
+            this.position.y =
+              collisionBlock.position.y + collisionBlock.height + buffer;
+            break;
+          }
+          if (this.velocity.y > 0) {
+            this.velocity.y = 0;
+            this.position.y = collisionBlock.position.y - this.height - buffer;
+            break;
+          }
+        } else {
+          if (this.velocity.x < 0) {
+            this.position.x =
+              collisionBlock.position.x + collisionBlock.width + buffer;
+            break;
+          }
+          if (this.velocity.x > 0) {
+            this.position.x = collisionBlock.position.x - this.width - buffer;
+            break;
+          }
         }
       }
     }
