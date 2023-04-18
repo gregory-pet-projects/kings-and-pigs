@@ -4,8 +4,8 @@ const BUFFER = 0.1;
 const VERTICAL_AXIS = "vertical";
 
 class Player extends Sprite {
-  constructor({ collisionBlocks = [], imageSrc, frameRate }) {
-    super({ imageSrc, frameRate });
+  constructor({ collisionBlocks = [], imageSrc, frameRate, animations }) {
+    super({ imageSrc, frameRate, animations });
     this.position = {
       x: 200,
       y: 200,
@@ -101,5 +101,14 @@ class Player extends Sprite {
         }
       }
     }
+  }
+
+  switchSprite(name) {
+    if (this.image === this.animations[name].image) return;
+    this.currentFrame = 0;
+    this.image = this.animations[name].image;
+    this.frameRate = this.animations[name].frameRate;
+    this.frameBuffer = this.animations[name].frameBuffer;
+    this.currentAnimation = this.animations[name];
   }
 }
