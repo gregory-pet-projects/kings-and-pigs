@@ -42,16 +42,7 @@ const player = new Player({
       frameBuffer: 4,
       loop: false,
       imageSrc: "./img/king/enterDoor.png",
-      onComplete: () => {
-        gsap.to(overlay, {
-          opacity: 1,
-          onComplete: () => {
-            level++;
-            levels[level].init();
-            gsap.to(overlay, { opacity: 0 });
-          },
-        });
-      },
+      onComplete: resetLevelData,
     },
   },
 });
@@ -89,7 +80,7 @@ function animate() {
 
   background.draw();
 
-  drawCollisionBlocks();
+  //drawCollisionBlocks();
 
   drawDoor();
 
