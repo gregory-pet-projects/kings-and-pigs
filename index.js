@@ -48,6 +48,20 @@ const player = new Player({
   },
 });
 
+const doors = [
+  new Sprite({
+    position: {
+      x: 767,
+      y: 270,
+    },
+    imageSrc: "./img/doorOpen.png",
+    frameRate: 5,
+    frameBuffer: 5,
+    loop: false,
+    autoplay: false,
+  }),
+];
+
 function moveBySidesHandler() {
   player.velocity.x = 0;
   if (keys.d.pressed) {
@@ -58,7 +72,7 @@ function moveBySidesHandler() {
     player.switchSprite("runLeft");
     player.velocity.x = -5;
     player.lastDirection = "left";
-  }else{
+  } else {
     if (player.lastDirection === "left") {
       player.switchSprite("idleLeft");
     } else {
@@ -72,12 +86,20 @@ function drawCollisionBlocks() {
     collisionBlocks.draw();
   });
 }
+
+function drawDoor() {
+  doors.forEach((door) => {
+    door.draw();
+  });
+}
 function animate() {
   window.requestAnimationFrame(animate);
 
   backgroundLevel1.draw();
 
   drawCollisionBlocks();
+
+  drawDoor();
 
   moveBySidesHandler();
 
