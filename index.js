@@ -53,8 +53,17 @@ function moveBySidesHandler() {
   if (keys.d.pressed) {
     player.switchSprite("runRight");
     player.velocity.x = 5;
+    player.lastDirection = "right";
   } else if (keys.a.pressed) {
+    player.switchSprite("runLeft");
     player.velocity.x = -5;
+    player.lastDirection = "left";
+  }else{
+    if (player.lastDirection === "left") {
+      player.switchSprite("idleLeft");
+    } else {
+      player.switchSprite("idleRight");
+    }
   }
 }
 
