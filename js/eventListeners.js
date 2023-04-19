@@ -11,7 +11,7 @@ const keys = {
 };
 
 function jump() {
-
+  if (player.preventInput) return;
 
   for (let i = 0; i < doors.length; i++) {
     const door = doors[i];
@@ -22,6 +22,11 @@ function jump() {
       player.hitbox.position.y + player.hitbox.height >= door.position.y &&
       player.hitbox.position.y <= door.position.y + door.height
     ) {
+      player.velocity.x = 0;
+      player.velocity.y = 0;
+      player.preventInput = true;
+      player.switchSprite("enterDoor");
+      door.play();
       return;
     }
   }
