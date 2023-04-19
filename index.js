@@ -55,13 +55,16 @@ const player = new Player({
     },
   },
 });
-let level = 2;
+let level = 1;
 let levels = {
   1: {
     init: initLevel1,
   },
   2: {
     init: initLevel2,
+  },
+  3: {
+    init: initLevel3,
   },
 };
 

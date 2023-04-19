@@ -54,3 +54,34 @@ function initLevel2() {
     }),
   ];
 }
+
+function initLevel3() {
+  parsedCollisions = collisionsLevel3.parse2D();
+
+  collisionBlocks = parsedCollisions.createObjectsFrom2D();
+  player.collisionBlocks = collisionBlocks;
+  player.position.x = 750;
+  player.position.y = 230;
+  background = new Sprite({
+    position: {
+      x: 0,
+      y: 0,
+    },
+    imageSrc: "./img/backgroundLevel3.png",
+  });
+
+  doors = [
+    new Sprite({
+      position: {
+        x: 176,
+        y: 335,
+      },
+      imageSrc: "./img/doorOpen.png",
+      frameRate: 5,
+      frameBuffer: 5,
+      loop: false,
+      autoplay: false,
+    }),
+  ];
+}
+  
