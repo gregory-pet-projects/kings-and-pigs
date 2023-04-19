@@ -109,5 +109,7 @@ function animate() {
 
   fadeLevelOnEnterDoor();
 }
+
+//=== START HERE ===
 levels[level].init();
 animate();
