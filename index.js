@@ -4,20 +4,12 @@ const c = canvas.getContext("2d");
 canvas.width = 64 * 16; //1024
 canvas.height = 64 * 9; //576  ratio
 
-const parsedCollisions = collisionsLevel1.parse2D();
-
-const collisionBlocks = parsedCollisions.createObjectsFrom2D();
-
-const backgroundLevel1 = new Sprite({
-  position: {
-    x: 0,
-    y: 0,
-  },
-  imageSrc: "./img/backgroundLevel1.png",
-});
+let parsedCollisions;
+let collisionBlocks;
+let background;
+let doors;
 
 const player = new Player({
-  collisionBlocks,
   imageSrc: "./img/king/idle.png",
   frameRate: 11,
   animations: {
@@ -53,25 +45,25 @@ const player = new Player({
       onComplete: () => {
         gsap.to(overlay, {
           opacity: 1,
+          onComplete: () => {
+            level++;
+            levels[level].init();
+            gsap.to(overlay, { opacity: 0 });
+          },
         });
       },
     },
   },
 });
-
-const doors = [
-  new Sprite({
-    position: {
-      x: 767,
-      y: 270,
-    },
-    imageSrc: "./img/doorOpen.png",
-    frameRate: 5,
-    frameBuffer: 5,
-    loop: false,
-    autoplay: false,
-  }),
-];
+let level = 2;
+let levels = {
+  1: {
+    init: initLevel1,
+  },
+  2: {
+    init: initLevel2,
+  },
+};
 
 function drawCollisionBlocks() {
   collisionBlocks.forEach((collisionBlocks) => {
@@ -92,7 +84,7 @@ const overlay = {
 function animate() {
   window.requestAnimationFrame(animate);
 
-  backgroundLevel1.draw();
+  background.draw();
 
   drawCollisionBlocks();
 
@@ -109,5 +101,7 @@ function animate() {
   c.fillRect(0, 0, canvas.width, canvas.height);
   c.restore();
 }
+
+levels[level].init();
 
 animate();
