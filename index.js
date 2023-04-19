@@ -51,7 +51,9 @@ const player = new Player({
       loop: false,
       imageSrc: "./img/king/enterDoor.png",
       onComplete: () => {
-        console.log("competed animation");
+        gsap.to(overlay, {
+          opacity: 1,
+        });
       },
     },
   },
@@ -82,6 +84,11 @@ function drawDoor() {
     door.draw();
   });
 }
+
+const overlay = {
+  opacity: 0,
+};
+
 function animate() {
   window.requestAnimationFrame(animate);
 
@@ -95,6 +102,12 @@ function animate() {
 
   player.draw();
   player.update();
+
+  c.save();
+  c.globalAlpha = overlay.opacity;
+  c.fillStyle = "black";
+  c.fillRect(0, 0, canvas.width, canvas.height);
+  c.restore();
 }
 
 animate();
