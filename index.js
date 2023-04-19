@@ -50,6 +50,9 @@ const player = new Player({
       frameBuffer: 4,
       loop: false,
       imageSrc: "./img/king/enterDoor.png",
+      onComplete: () => {
+        console.log("competed animation");
+      },
     },
   },
 });

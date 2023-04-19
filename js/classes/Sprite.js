@@ -19,7 +19,7 @@ class Sprite {
     this.animations = animations;
     this.loop = loop;
     this.autoplay = autoplay;
-    this.image.onload = () => {
+    this.currentAnimation = this.image.onload = () => {
       this.loaded = true;
 
       this.width = this.image.width / this.frameRate; //divided by frame count
@@ -66,15 +66,24 @@ class Sprite {
   }
 
   updateFrames() {
-    if (!this.autoplay) {
-      return;
-    }
+    if (!this.autoplay) return;
+    
     this.elapsedFrames++;
     if (this.elapsedFrames % this.frameBuffer === 0) {
       if (this.currentFrame < this.frameRate - 1) {
         this.currentFrame++;
       } else if (this.loop) {
         this.currentFrame = 0;
+      }
+    }
+
+    if (this.currentAnimation?.onComplete) {
+      if (
+        this.currentFrame === this.frameRate - 1 &&
+        !this.currentAnimation.isActive
+      ) {
+        this.currentAnimation.onComplete();
+        this.currentAnimation.isActive = true;
       }
     }
   }
